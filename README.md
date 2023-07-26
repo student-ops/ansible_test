@@ -2,6 +2,8 @@
 
 **docker のスクラッチイメージに rapios のルートファイルシステムを載せて動かそうとするもおそらくアーキテクチャの問題で exec formt error**
 
+uname -m でアーキテクチャの種類が取得できる
+
 ### gpt 解答
 
 Apple Silicon Mac は ARM アーキテクチャを使用していますが、Docker Desktop for Mac は現在、ARM アーキテクチャの Linux イメージを直接実行することはサポートしていません。代わりに、Docker Desktop for Mac は QEMU を使用して ARM アーキテクチャの Linux イメージをエミュレートします。
