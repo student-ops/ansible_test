@@ -1,0 +1,6 @@
+- name: Create a user
+  hosts: all
+  tasks:
+    - name: Create a user named 'ansible'
+      user:
+        name: ansible
