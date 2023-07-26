@@ -1,8 +1,6 @@
----
-- hosts: raspberrypi
+- name: Create a user
+  hosts: all
   tasks:
-    - name: Ensure user exists
-      ansible.builtin.user:
-        name: newuser
-        password: "{{ 'password' | password_hash('sha512') }}"
-        state: present
+    - name: Create a user named 'ansible'
+      user:
+        name: ansible
