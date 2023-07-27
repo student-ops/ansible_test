@@ -1,6 +1,40 @@
-- name: Create a user
-  hosts: all
+---
+- hosts: raspiosc
+  become: yes
   tasks:
-    - name: Create a user named 'ansible'
+    - name: Add new user
       user:
-        name: ansible
+        name: new_user
+        password: "{{ 'new_user' | password_hash('sha512') }}"
+        create_home: yes
+        shell: /bin/bash
+
+    - name: Grant new user sudo privileges
+      copy:
+        dest: /etc/sudoers.d/new_user
+        content: "new_user ALL=(ALL) NOPASSWD:ALL"
+        validate: "visudo -cf %s"
+
+    - name: Copy pi user's home directory to new user's home directory
+      shell: cp -R /home/pi/* /home/new_user/
+
+    - name: Disable auto login
+      lineinfile:
+        path: /etc/lightdm/lightdm.conf
+        regexp: "^autologin-user=pi"
+        line: "#autologin-user=pi"
+
+    - name: Delete pi user
+      user:
+        name: pi
+        remove: yes
+        force: yes
+
+    - name: Generate SSH host keys
+      command: ssh-keygen -A
+
+    - name: Start SSH service
+      service:
+        name: ssh
+        state: started
+        enabled: yes

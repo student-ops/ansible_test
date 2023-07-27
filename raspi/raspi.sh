@@ -10,4 +10,5 @@ fi
 docker image import root.tar lakky/raspios_lite:latest
 
 # Run the container with a specific name
-docker run -d --name raspiosc lakky/raspios_lite:latest /bin/bash -c "ls; sleep infinity"
+docker run -d -p 2222:22 --name raspiosc lakky/raspios_lite:latest /bin/bash -c "ls; sleep infinity"
+
