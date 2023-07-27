@@ -1,0 +1,22 @@
+---
+- hosts: raspiosc
+  become: yes
+  tasks:
+    - name: Configure static IP for wlan0
+      ansible.builtin.lineinfile:
+        path: /etc/dhcpcd.conf
+        line: "{{ item }}"
+      loop:
+        - "interface wlan0"
+        - "static ip_address=192.168.11.40/24"
+        - "static routers=192.168.11.1"
+        - "static domain_name_servers=192.168.11.1"
+    - name: Configure static IP for wlan0
+      ansible.builtin.lineinfile:
+        path: /etc/dhcpcd.conf
+        line: "{{ item }}"
+      loop:
+        - "interface wlan0"
+        - "static ip_address={{ wlan0_ip }}/24"
+        - "static routers={{ wlan0_router }}"
+        - "static domain_name_servers={{ wlan0_dns }}"
