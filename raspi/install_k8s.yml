@@ -1,0 +1,65 @@
+---
+- hosts: raspiosc
+  become: yes
+  tasks:
+    - name: Update and Upgrade apt
+      apt:
+        upgrade: yes
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Install necessary packages
+      apt:
+        name: "{{ packages }}"
+      vars:
+        packages:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
+        state: present
+
+    - name: Update apt and install docker-ce
+      apt:
+        update_cache: yes
+        name: docker-ce
+        state: latest
+
+    - name: Install pip
+      apt:
+        name: python3-pip
+        state: present
+
+    - name: Install Docker module for Python
+      pip:
+        name: docker
+        state: present
+
+    - name: Install Kubernetes module
+      pip:
+        name: kubernetes
+        state: present
+
+    - name: Install Kubernetes packages
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - kubeadm
+        - kubectl
+        - kubelet
+      notify: Restart kubelet
+
+  handlers:
+    - name: Restart kubelet
+      systemd:
+        state: restarted
+        name: kubelet
