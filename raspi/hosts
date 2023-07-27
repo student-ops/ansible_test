@@ -1,2 +1,0 @@
-[raspberrypi]
-raspios ansible_connection=docker ansible_user=root

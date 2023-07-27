@@ -29,12 +29,3 @@
         name: pi
         remove: yes
         force: yes
-
-    - name: Generate SSH host keys
-      command: ssh-keygen -A
-
-    - name: Start SSH service
-      service:
-        name: ssh
-        state: started
-        enabled: yes
