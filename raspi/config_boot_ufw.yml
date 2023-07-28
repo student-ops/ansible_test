@@ -1,0 +1,40 @@
+---
+- hosts: raspiosc
+  become: true
+  tasks:
+    - name: Install ufw package
+      apt:
+        name: ufw
+        state: present
+
+    - name: Reset all ufw rules
+      command: ufw --force reset
+
+    - name: Deny all incoming traffic by default
+      ufw:
+        direction: incoming
+        policy: deny
+
+    - name: Allow port 22
+      ufw:
+        rule: allow
+        port: "22"
+
+    - name: Allow port 8086
+      ufw:
+        rule: allow
+        port: "8086"
+
+    - name: Allow port 8086
+      ufw:
+        rule: allow
+        port: "8080"
+
+    - name: Allow port 5900
+      ufw:
+        rule: allow
+        port: "5900"
+
+    - name: Enable ufw
+      ufw:
+        state: enabled
