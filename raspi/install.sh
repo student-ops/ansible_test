@@ -1,0 +1,1 @@
+ansible-playbook -i node.ini install_docker.yml && ansible-playbook -i node.ini install_k8s.yml
