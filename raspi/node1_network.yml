@@ -17,6 +17,6 @@
         line: "{{ item }}"
       loop:
         - "interface wlan0"
-        - "static ip_address={{ wlan0_ip }}/24"
-        - "static routers={{ wlan0_router }}"
-        - "static domain_name_servers={{ wlan0_dns }}"
+        - "static ip_address={{ IPADDRESS }}/24"
+        - "static routers={{ ROUTERS }}"
+        - "static domain_name_servers={{ DNS }}"
