@@ -3,9 +3,6 @@
   hosts: raspiosc
   become: yes
   tasks:
-    - name: Generate SSH host keys
-      command: ssh-keygen -A
-
     - name: Start SSH service
       service:
         name: ssh
@@ -27,6 +24,15 @@
         line: "PubkeyAuthentication yes"
         validate: "/usr/sbin/sshd -T -f %s"
       notify: restart ssh
+
+    - name: Change SSH port
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "^#?Port"
+        line: "Port {{ modify_ssh_port }}"
+        validate: "/usr/sbin/sshd -T -f %s"
+      notify: restart ssh
+
   handlers:
     - name: restart ssh
       ansible.builtin.service:

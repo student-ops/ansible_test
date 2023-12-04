@@ -2,21 +2,23 @@
 - hosts: raspiosc
   become: yes
   tasks:
+    - name: Check if /etc/dhcpcd.conf exists
+      ansible.builtin.stat:
+        path: /etc/dhcpcd.conf
+      register: dhcpcd_conf
+
+    - name: Create empty /etc/dhcpcd.conf if it does not exist
+      ansible.builtin.file:
+        path: /etc/dhcpcd.conf
+        state: touch
+      when: not dhcpcd_conf.stat.exists
+
     - name: Configure static IP for wlan0
       ansible.builtin.lineinfile:
         path: /etc/dhcpcd.conf
         line: "{{ item }}"
       loop:
-        - "interface wlan0"
+        - "interface eth0"
         - "static ip_address=192.168.11.40/24"
         - "static routers=192.168.11.1"
         - "static domain_name_servers=192.168.11.1"
-    - name: Configure static IP for wlan0
-      ansible.builtin.lineinfile:
-        path: /etc/dhcpcd.conf
-        line: "{{ item }}"
-      loop:
-        - "interface wlan0"
-        - "static ip_address={{ IPADDRESS }}/24"
-        - "static routers={{ ROUTERS }}"
-        - "static domain_name_servers={{ DNS }}"

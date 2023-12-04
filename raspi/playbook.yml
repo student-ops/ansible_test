@@ -15,17 +15,8 @@
         content: "new_user ALL=(ALL) NOPASSWD:ALL"
         validate: "visudo -cf %s"
 
-    - name: Copy pi user's home directory to new user's home directory
-      shell: cp -R /home/pi/* /home/new_user/
-
     - name: Disable auto login
       lineinfile:
         path: /etc/lightdm/lightdm.conf
         regexp: "^autologin-user=pi"
         line: "#autologin-user=pi"
-
-    - name: Delete pi user
-      user:
-        name: pi
-        remove: yes
-        force: yes

@@ -15,10 +15,10 @@
         direction: incoming
         policy: deny
 
-    - name: Allow port 22
+    - name: Allow port 33322
       ufw:
         rule: allow
-        port: "22"
+        port: "33322"
 
     - name: Allow port 8086
       ufw:
